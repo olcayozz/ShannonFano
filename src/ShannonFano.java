@@ -1,24 +1,79 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class ShannonFano {
-	public static void main(String[] args) {
-		String textToCompress = new String("Olcay Özyılmaz");
+	public static void main(String[] args) throws IOException {
+		//Code sureci baslatiliyor.
 		Characters alphabet = initializeFrequencyTable();
+		String textToCompress =  ReadFile("/home/olcay/BilgiTeorisi/textToCode.txt",alphabet);
+		String codedText = new String("");
 		alphabet = GenerateCodeByUsingShannon(alphabet);
+		codedText = Code(alphabet,textToCompress);
+		System.out.println("Text 		: "  + textToCompress);
+		System.out.println("Coded Text 	: "  + codedText);
+		//CODING ENDS.
 		
+		//Decode sureci baslatiliyor.
+		String compressedText = codedText;
+		String plainText = new String("");
+		Characters alphabet2 = initializeFrequencyTable();
+		alphabet2 = GenerateCodeByUsingShannon(alphabet2);//Decode için sadece alfabe ve olasiliklari gönderiyoruz. Ve kod haritasini yeniden olusturuyoruz.
+		plainText = DeCode(alphabet,compressedText);
+		System.out.println("DeCoded Text	: "  + plainText);
+		//DECODING ENDS.
 		
-		
-		for (Character c : alphabet)
+		//
+		System.out.println("\nAlphabet;\n");
+		alphabet.SortByCharacter();
+		for (Character c : alphabet )
 		{
 			System.out.println(c.getCharacter() +" = "+ c.getProbability() + " --> "+ c.getCode());
 		}
 	}
 	
+	private static String DeCode(Characters alphabet, String compressedText) {
+		String plainText = new String("");
+		alphabet.SortByProfitability();
+		for ( int x=0; x<=compressedText.length(); x++) {
+            for (Character character : alphabet) {
+            	if(character.getCode().equals(compressedText.substring(0, x)))
+				{
+					plainText+=character.getCharacter();
+					compressedText=compressedText.substring(x);
+					x=0;
+				}
+			}
+        }
+		return plainText;
+	}
+	
+	private static String Code(Characters alphabet, String textToCompress) {
+		String codedText = new String("");
+		for ( int x=0; x<textToCompress.length(); x++) {
+            for (Character character : alphabet) {
+            	if(character.getCharacter().toCharArray()[0] == String.valueOf(textToCompress.charAt(x)).toCharArray()[0])
+				{
+					codedText+=character.getCode();
+				}
+			}
+        }
+		return codedText;
+	}
+
+	private static String ReadFile(String path, Characters alphabet) throws IOException {
+		String textOfFile = new String("");
+		String regexPattern = new String("[^");
+		for (Character character : alphabet) {
+			regexPattern+=character.getCharacter();
+		} 
+		regexPattern+="]";
+		for (String line : Files.readAllLines(Paths.get(path))) {
+			textOfFile+=line.toUpperCase();
+		}
+		return textOfFile.replaceAll(regexPattern, "#");
+	}
+
 	public static Characters GenerateCodeByUsingShannon(Characters alphabet)
 	{
 		Double olasiliklarToplami = new Double(0); //recursive fonksiyon'da sub arrayler için toplam alacak.
@@ -87,6 +142,7 @@ public class ShannonFano {
 		alphabet.Add("V", 0.959);
 		alphabet.Add("Y", 3.336);
 		alphabet.Add("Z", 1.5);
+		alphabet.Add("#", 0.00000001); //tum semboller ve bosluk karakteri icin placeHolder olarak kullanildi. 
 		return alphabet;
 	}
 }
