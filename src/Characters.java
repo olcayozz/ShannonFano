@@ -31,4 +31,12 @@ public class Characters extends ArrayList<Character> {
 			}
 		});
 	}
+	public void SortByScore()//C şıkkı için.
+	{
+		Collections.sort(this, new Comparator<Character>() {
+			public int compare(Character c1, Character c2){
+			return Integer.compare(c2.getScore(),c1.getScore());
+			}
+		});
+	}
 }

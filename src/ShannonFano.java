@@ -2,8 +2,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import javax.management.relation.RelationServiceNotRegisteredException;
-
 public class ShannonFano {
 	public static void main(String[] args) throws IOException {
 		//Code sureci baslatiliyor.
