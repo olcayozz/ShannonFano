@@ -10,8 +10,6 @@ public class ShannonFano {
 		String codedText = new String("");
 		alphabet = GenerateCodeByUsingShannon(alphabet);
 		codedText = Code(alphabet,textToCompress);
-		System.out.println("Text 		: "  + textToCompress);
-		System.out.println("Coded Text 	: "  + codedText);
 		//CODING ENDS.
 		
 		//Decode sureci baslatiliyor.
@@ -20,8 +18,12 @@ public class ShannonFano {
 		Characters alphabet2 = initializeFrequencyTable();
 		alphabet2 = GenerateCodeByUsingShannon(alphabet2);//Decode için sadece alfabe ve olasiliklari gönderiyoruz. Ve kod haritasini yeniden olusturuyoruz.
 		plainText = DeCode(alphabet,compressedText);
-		System.out.println("DeCoded Text	: "  + plainText);
 		//DECODING ENDS.
+		
+		//
+		System.out.println("Text 		: "  + textToCompress);
+		System.out.println("Coded Text 	: "  + codedText);
+		System.out.println("DeCoded Text: "  + plainText);
 		
 		//
 		System.out.println("\nAlphabet;\n");
@@ -87,17 +89,28 @@ public class ShannonFano {
 			{
 				olasiliklarToplami+=c.getProbability();
 			}
-			split_p = olasiliklarToplami/2;
+			split_p = olasiliklarToplami/alphabet.size();
+			int i=0;
 			
-			olasiliklarToplami = 0.0;
 			for (Character c : alphabet)
 			{
-				olasiliklarToplami+=c.getProbability();
-				if(olasiliklarToplami>split_p)
+				i++;
+				if(c.getProbability()>split_p)
 				{
 					c.addBit("0");
 					downChars.add(c);
-				}else
+				}else if(c.getProbability().equals(split_p))
+				{
+					if(i%2==0) {
+						c.addBit("1");
+						upChars.add(c);
+					}
+					else{
+						c.addBit("0");
+						downChars.add(c);
+					}
+				}
+				else
 				{
 					c.addBit("1");
 					upChars.add(c);
@@ -105,9 +118,6 @@ public class ShannonFano {
 			}
 			GenerateCodeByUsingShannon(downChars);
 			GenerateCodeByUsingShannon(upChars);
-		}else
-		{
-			return alphabet;
 		}
 		//alphabet.SortByProfitability();
 		return alphabet;
@@ -151,9 +161,9 @@ public class ShannonFano {
 		 * Noktalama işaretleri için placeHolder "*" olarak tanımlandı.
 		 * Diğer karakterler için place holder "#" olarak tanımlandı.
 		 */
-		Character diger		= new Character("#",2.0); //%2 lik dilim
-		Character bosluk 	= new Character(" ",5.0); //%5 lik dilim
-		Character noktalama	= new Character("*",3.0); //%3 lik dilim
+		Character diger		= new Character("#",2.0,alphabet.size()+1); //%2 lik dilim
+		Character bosluk 	= new Character(" ",5.0,alphabet.size()+1); //%5 lik dilim
+		Character noktalama	= new Character("*",3.0,alphabet.size()+1); //%3 lik dilim
 		
 		Double totalPropability = new Double(0);
 		Double totalDecRange = new Double(0);
