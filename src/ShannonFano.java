@@ -21,17 +21,20 @@ public class ShannonFano {
 		//DECODING ENDS.
 		
 		//
-		System.out.println("Text 		: "  + textToCompress);
-		System.out.println("Coded Text 	: "  + codedText);
-		System.out.println("DeCoded Text: "  + plainText);
+		System.out.println("Text          : "  + textToCompress);
+		System.out.println("\nCoded Text    : "  + codedText);
+		System.out.println("\nDeCoded Text  : "  + plainText);
 		
-		//
+		
+		/*
 		System.out.println("\nAlphabet;\n");
+		
 		alphabet.SortByCharacter();
 		for (Character c : alphabet )
 		{
 			System.out.println(c.getCharacter() +" = "+ c.getProbability() + " --> "+ c.getCode());
 		}
+		*/
 	}
 	
 	private static String DeCode(Characters alphabet, String compressedText) {

@@ -2,6 +2,7 @@ Merhaba,
 
 Bu dosya, Shannon Fano algoritması kullanarak sıkıştırma uygulaması için bir test dosyasıdır.
 
+$ , ;.334321*91*230*
 
 Regular Expressions (Regex) Character Classes Cheat Sheet
 
