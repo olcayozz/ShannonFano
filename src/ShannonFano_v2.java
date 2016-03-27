@@ -11,21 +11,21 @@ public class ShannonFano_v2 {
 		alphabet = GenerateCodeByUsingShannon(alphabet);
 		String codedText = Code(alphabet,textToCode);
 
-		System.out.println("Text 		: "  + textToCode);
-		System.out.println("Coded Text 	: "  + codedText);
 		
 		String decodedText = DeCode(alphabet,codedText);
 
-		System.out.println("Decoded Text 	: "  + decodedText);
+		System.out.println("Text         : "  + textToCode);
+		System.out.println("\nCoded Text   : "  + codedText);
+		System.out.println("\nDecoded Text : "  + decodedText);
 		
 		alphabet.SortByIndex();
-
+/*
 		System.out.println("\nAlphabet;\n");
 		for (Character c : alphabet )
 		{
 			System.out.println(c.getIndex()-1 + " | " + c.getCharacter() +" = "+ c.getProbability() + " --> "+ c.getCode());
 		}
-
+*/
 	}
 	private static String DeCode(Characters alphabet, String compressedText) {
 		String plainText = new String(""), word= new String("");
